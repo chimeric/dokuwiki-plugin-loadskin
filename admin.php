@@ -77,7 +77,7 @@ class admin_plugin_loadskin extends DokuWiki_Admin_Plugin {
      */
     function html() {
         global $lang;
-        //print $this->plugin_locale_xhtml('intro');
+        print $this->plugin_locale_xhtml('intro');
 
         echo '<form action="' . DOKU_SCRIPT . '" method="post">' . DOKU_LF;
         echo '  <input type="hidden" name="do" value="admin" />' . DOKU_LF;
