@@ -50,7 +50,7 @@ class action_plugin_loadskin extends DokuWiki_Action_Plugin {
 		if(@file_exists($config)) {
 			$data = unserialize(io_readFile($config, false));
 			$tpl = $this->getTpl($data, $ID);
-			if($tpl) {
+			if($tpl && $_REQUEST['do'] != 'admin') {
 				$conf['template'] = $tpl;
 			}
 		}
