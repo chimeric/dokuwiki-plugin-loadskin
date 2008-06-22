@@ -1,4 +1,9 @@
 <?php
+/**
+ * DokuWiki Plugin Loadskin
+ *
+ * Michael Klier <chi@chimeric.de>
+ */
 if(!defined('DOKU_INC')) define('DOKU_INC',realpath(dirname(__FILE__).'/../../../').'/');
 if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN',DOKU_INC.'lib/plugins/');
 require_once(DOKU_PLUGIN.'admin.php');
@@ -98,27 +103,30 @@ class admin_plugin_loadskin extends DokuWiki_Admin_Plugin {
         if(@file_exists($this->config)) {
             $data = unserialize(io_readFile($this->config, false));
 
-            echo '<table class="inline">' . DOKU_LF;
-            echo '  <tr>' . DOKU_LF;
-            echo '    <th>' . $lang['mu_namespace'] . '</th>' . DOKU_LF;
-            echo '    <th>' . $this->getLang('template') . '</th>' . DOKU_LF;
-            echo '    <th>&nbsp;</th>' . DOKU_LF;
-            echo '  </tr>' . DOKU_LF;
-            foreach($data as $key => $value) {
-                echo '  <tr>' . DOKU_LF;
-                echo '    <td>' . $key . '</td>' . DOKU_LF;
-                echo '    <td>' . $value . '</td>' . DOKU_LF;
-                echo '    <td>' . DOKU_LF;
-                echo '      <form action="' . DOKU_SCRIPT . '" method="post">' . DOKU_LF;
-                echo '        <input type="hidden" name="do" value="admin" />' . DOKU_LF;
-                echo '        <input type="hidden" name="page" value="loadskin" />' . DOKU_LF;
-                echo '        <input type="hidden" name="act" value="del" />' . DOKU_LF;
-                echo '        <input type="submit" class="button" name="submit" value="' . $lang['btn_delete'] . '" />' . DOKU_LF;
-                echo '      </form>' . DOKU_LF;
-                echo '    </td>' . DOKU_LF;
-                echo '  </tr>' . DOKU_LF;
-            }
-            echo '</table>' . DOKU_LF;
+			if(!empty($data)) {
+				echo '<table class="inline">' . DOKU_LF;
+				echo '  <tr>' . DOKU_LF;
+				echo '    <th>' . $lang['mu_namespace'] . '</th>' . DOKU_LF;
+				echo '    <th>' . $this->getLang('template') . '</th>' . DOKU_LF;
+				echo '    <th>&nbsp;</th>' . DOKU_LF;
+				echo '  </tr>' . DOKU_LF;
+				foreach($data as $key => $value) {
+					echo '  <tr>' . DOKU_LF;
+					echo '    <td>' . $key . '</td>' . DOKU_LF;
+					echo '    <td>' . $value . '</td>' . DOKU_LF;
+					echo '    <td>' . DOKU_LF;
+					echo '      <form action="' . DOKU_SCRIPT . '" method="post">' . DOKU_LF;
+					echo '        <input type="hidden" name="do" value="admin" />' . DOKU_LF;
+					echo '        <input type="hidden" name="page" value="loadskin" />' . DOKU_LF;
+					echo '        <input type="hidden" name="act" value="del" />' . DOKU_LF;
+					echo ' 		  <input type="hidden" name="id" value="' . $key . '" />' . DOKU_LF;
+					echo '        <input type="submit" class="button" name="submit" value="' . $lang['btn_delete'] . '" />' . DOKU_LF;
+					echo '      </form>' . DOKU_LF;
+					echo '    </td>' . DOKU_LF;
+					echo '  </tr>' . DOKU_LF;
+				}
+				echo '</table>' . DOKU_LF;
+			}
         }
     }
 
