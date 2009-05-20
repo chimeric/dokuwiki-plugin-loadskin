@@ -23,10 +23,10 @@ class action_plugin_loadskin extends DokuWiki_Action_Plugin {
         return array(
                 'author' => 'Michael Klier',
                 'email'  => 'chi@chimeric.de',
-                'date'   => '2008-06-22',
+                'date'   => @file_get_contents(DOKU_PLUGIN.'loadskin/VERSION'),
                 'name'   => 'loadskin',
             	'desc'   => 'Allows to change the used template for a namespace or certain pages',
-                'url'    => 'http://wiki.splitbrain.org/plugin:loadskin'
+                'url'    => 'http://dokuwiki.org/plugin:loadskin'
             );
     }
 
