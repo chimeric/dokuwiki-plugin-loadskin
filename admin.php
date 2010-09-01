@@ -50,8 +50,8 @@ class admin_plugin_loadskin extends DokuWiki_Admin_Plugin {
     function handle() {
         $data = array();
 
-        if(!empty($_REQUEST['id'])) {
-            $id = cleanID($_REQUEST['id']);
+        if(!empty($_REQUEST['pattern'])) {
+            $id = cleanID($_REQUEST['pattern']);
             
             if($_REQUEST['act'] == 'add') {
                 if(@file_exists($this->config)) {
@@ -79,23 +79,21 @@ class admin_plugin_loadskin extends DokuWiki_Admin_Plugin {
         global $lang;
         print $this->plugin_locale_xhtml('intro');
 
-        echo '<form action="' . DOKU_SCRIPT . '" method="post">' . DOKU_LF;
-        echo '  <input type="hidden" name="do" value="admin" />' . DOKU_LF;
-        echo '  <input type="hidden" name="page" value="loadskin" />' . DOKU_LF;
-        echo '  <input type="hidden" name="act" value="add" />' . DOKU_LF;
-        echo '  <label>' . $lang['mu_namespace'] . ':</label>' . DOKU_LF;
-        echo '  <input type="text" class="edit" name="id" value="" />' . DOKU_LF;
-        echo '  <label>' . $this->getLang('template') . ':</label>' . DOKU_LF;
-
-        echo '  <select name="tpl">' . DOKU_LF;
-        $templates = $this->getTemplates();
-        foreach($templates as $template) {
-            print '  <option value="' . $template . '">' . $template . '</option>' . DOKU_LF;
-        }
-        echo '  </select>' . DOKU_LF;
-
-        echo '  <input type="submit" class="button" name="submit" value="' . $lang['btn_save'] . '" />' . DOKU_LF;
-        echo '</form>' . DOKU_LF;
+        $form = new Doku_Form(array());
+        $form->startFieldSet('Add rule');
+        $form->addHidden('id',$ID);
+        $form->addHidden('do','admin');
+        $form->addHidden('page','loadskin');
+        $form->addHidden('act','add');
+        $form->addElement(form_makeOpenTag('p'));
+        $form->addElement(form_makeTextField('pattern','',$lang['mu_namespace']));
+        $form->addElement(form_makeCloseTag('p'));
+        $form->addElement(form_makeOpenTag('p'));
+        $form->addElement(form_makeListboxField('tpl',$this->getTemplates(),'',$this->getLang('template')));
+        $form->addElement(form_makeCloseTag('p'));
+        $form->addElement(form_makeButton('submit','admin',$lang['btn_save']));
+        $form->endFieldSet();
+        $form->printForm();
 
         echo '<br />' . DOKU_LF;
         echo '<br />' . DOKU_LF;
@@ -115,13 +113,16 @@ class admin_plugin_loadskin extends DokuWiki_Admin_Plugin {
 					echo '    <td>' . $key . '</td>' . DOKU_LF;
 					echo '    <td>' . $value . '</td>' . DOKU_LF;
 					echo '    <td>' . DOKU_LF;
-					echo '      <form action="' . DOKU_SCRIPT . '" method="post">' . DOKU_LF;
-					echo '        <input type="hidden" name="do" value="admin" />' . DOKU_LF;
-					echo '        <input type="hidden" name="page" value="loadskin" />' . DOKU_LF;
-					echo '        <input type="hidden" name="act" value="del" />' . DOKU_LF;
-					echo ' 		  <input type="hidden" name="id" value="' . $key . '" />' . DOKU_LF;
-					echo '        <input type="submit" class="button" name="submit" value="' . $lang['btn_delete'] . '" />' . DOKU_LF;
-					echo '      </form>' . DOKU_LF;
+
+                    $form = new Doku_Form(array());
+                    $form->addHidden('do','admin');
+                    $form->addHidden('page','loadskin');
+                    $form->addHidden('act','del');
+                    $form->addHidden('id',$ID);
+                    $form->addHidden('pattern',$key);
+                    $form->addElement(form_makeButton('submit','admin',$lang['btn_delete']));
+                    $form->printForm();
+
 					echo '    </td>' . DOKU_LF;
 					echo '  </tr>' . DOKU_LF;
 				}
